@@ -22,11 +22,19 @@ class DataIngestion:
     def __init__(self):
         self.ingestion_config=DataIngestionConfig()
 
-    def initiate_data_ingestion(self):
+    def initiate_data_ingestion(self,data=None):
         try:
-            ##reading the data from mysql
-            df=read_sql_data()
-            logging.info("Reading completed mysql database")
+
+            if data is not None:
+                #Reading from direct path
+                df=pd.read_csv(os.path.join(data))
+                logging.info("Reading completed from CSV/Eccel file")
+
+
+            else:
+                ##reading the data from mysql
+                df=read_sql_data()
+                logging.info("Reading completed mysql database")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
